@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <script src="/socket.io/socket.io.js"></script>
+        <title>Client</title>
+        <script>
+            var socket;
+            function init() {
+                socket = io.connect();
+                socket.on('broadcast', function(data) {
+                    document.getElementById("BroadcastMessage").innerHTML = data.msg;
+                });
+            };
+            function submit() {
+                var data = {
+                    cmd: document.getElementById("CommandField").value,
+                    val: document.getElementById("IntervalField").value
+                };
+                socket.emit('submit', data);
+            };
+        </script>
+    </head>
+    <body onload="init()">
+        <p> -- <span id="BroadcastMessage"></span></p>
+        <p>
+            <b>Interval: </b><input id="IntervalField" type="number" min="1" value="1000"/><em> ms</em>
+        </p>
+        <p>
+            <b>Command: </b><input id="CommandField" type="text"/>
+            <button type="button" onclick="submit()">Send</button>
+        </p>
+    
+    </body>
+</html>
